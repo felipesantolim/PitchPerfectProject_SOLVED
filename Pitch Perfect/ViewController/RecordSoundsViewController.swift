@@ -15,9 +15,9 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     
     private var audioRecorder: AVAudioRecorder!
     
-    @IBOutlet weak var recordButton         : UIButton!
-    @IBOutlet weak var stopRecordingButton  : UIButton!
-    @IBOutlet weak var recordingLabel       : UILabel!
+    @IBOutlet weak var recordButton: UIButton!
+    @IBOutlet weak var stopRecordingButton: UIButton!
+    @IBOutlet weak var recordingLabel: UILabel!
     
     //MARK: Lifecycle
     
@@ -37,37 +37,37 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         
         if let filePath = filePathSaveAudio() {
             
-            recordButton.isEnabled          = false
-            stopRecordingButton.isEnabled   = true
-            recordingLabel.text             = "Recording audio"
-            
+            configureRecordingButton(true)
             startAudioRecorder(filePath)
         }
     }
     
     @IBAction func stopRecordingAudio (_ sender: UIButton) {
-        recordButton.isEnabled          = true
-        stopRecordingButton.isEnabled   = false
-        recordingLabel.text             = "Tap to Record"
-        
+        configureRecordingButton(false)
         audioRecorder.stop()
     }
     
     //MARK: Private methods
     
     private func initialSettings () {
-        recordButton.isEnabled          = true
-        stopRecordingButton.isEnabled   = false
-        recordingLabel.text             = "Tap to Record"
+        recordButton.isEnabled = true
+        stopRecordingButton.isEnabled = false
+        recordingLabel.text = "Tap to Record"
         
+    }
+    
+    private func configureRecordingButton (_ isRecording: Bool) {
+        recordingLabel.text = isRecording ? "Recording audio" : "Tap to Record"
+        recordButton.isEnabled = isRecording ? false : true
+        stopRecordingButton.isEnabled = isRecording ? true : false
     }
     
     private func filePathSaveAudio () -> URL? {
         
-        let dirPath         = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-        let recordingName   = "recordedVoice.wav"
-        let pathArray       = [dirPath, recordingName]
-        let filePath        = URL(string: pathArray.joined(separator: "/"))
+        let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let recordingName = "recordedVoice.wav"
+        let pathArray = [dirPath, recordingName]
+        let filePath = URL(string: pathArray.joined(separator: "/"))
         
         return filePath
     }
